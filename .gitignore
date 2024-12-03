@@ -1,0 +1,75 @@
+# eclipse
+bin
+*.launch
+.settings
+.metadata
+.classpath
+.project
+
+# idea
+out
+*.ipr
+*.iws
+*.iml
+.idea
+
+# gradle
+build
+.gradle
+
+# other
+eclipse
+run
+
+# Files from Forge MDK
+forge*changelog.txt
+
+# Log files
+*.log
+
+# Backup files
+*.bak
+
+# Swap files for vim editor
+*.swp
+*.swo
+
+# Compiled Java class files
+*.class
+
+# JAR files
+*.jar
+
+# WAR files
+*.war
+
+# EAR files
+*.ear
+
+# Serialized Java objects
+*.ser
+
+# Temporary save files
+*.save
+
+# Old files
+*.old
+
+# Original files
+*.orig
+
+# Rejected patch files
+*.rej
+
+# Temporary files
+*.tmp
+
+# PID files
+*.pid
+
+# Lock files
+*.lock
+
+# Mac OS folder settings
+*.DS_Store
+old_builds
