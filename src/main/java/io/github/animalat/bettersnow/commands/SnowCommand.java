@@ -20,7 +20,9 @@ public class SnowCommand {
             double x = player.getX();
             double z = player.getZ();
 
-            SnowLayerHandler.placeSnowBlock(source.getLevel(), (int) x, (int) z);
+            final int testSeed = 1;
+
+            SnowLayerHandler.placeSnowBlock(source.getLevel(), (int) x, (int) z, testSeed);
             return 0;
         }));
     }

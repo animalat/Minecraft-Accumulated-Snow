@@ -10,8 +10,15 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.TickEvent;
 
+import java.util.SplittableRandom;
+
 public class SnowLayerHandler {
-    public static void placeSnowBlock(Level world, int x, int z) {
+    public static void placeSnowBlock(Level world, int x, int z, int randomValue) {
+        final int doProbability = 0;
+        if (randomValue != doProbability) {
+            return;
+        }
+
         --x;    // realign coordinate
                 // don't need one for z due to way that coords are handled
 
@@ -25,8 +32,9 @@ public class SnowLayerHandler {
 
         Biome worldBiome = world.getBiome(surfacePos).get();
 
+        final double freezingTemp = 0.15;
         boolean isSnowing = worldBiome.getModifiedClimateSettings().hasPrecipitation() &&
-                            worldBiome.getModifiedClimateSettings().temperature() <= 0.15;
+                            worldBiome.getModifiedClimateSettings().temperature() <= freezingTemp;
 
         if (!isSnowing) {
             return;
@@ -37,7 +45,9 @@ public class SnowLayerHandler {
         if (blockState.is(Blocks.SNOW)) {
             int layers = blockState.getValue(SnowLayerBlock.LAYERS);
             // only want case where layers are (near) full or nonexistent
-            if (layers >= 7 || layers < 1) {
+            final int maxLayers = 7;
+            final int minLayers = 1;
+            if (layers >= maxLayers || layers < minLayers) {
                 return;
             }
 

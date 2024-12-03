@@ -16,8 +16,36 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
+import java.util.SplittableRandom;
+
 @Mod.EventBusSubscriber(modid = BetterSnow.MOD_ID)
 public class BackgroundBlockProcessor {
+    private static SplittableRandom randomVals = new SplittableRandom();
+
+    private static ServerLevel getOverworld() {
+        // Get Minecraft server instance
+        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+
+        if (server != null) {
+            return server.overworld();
+        }
+
+        return null;
+    }
+
+    private static void processChunk(LevelChunk chunk, Level world) {
+        ChunkPos chunkPos = chunk.getPos();
+        int chunkStartX = chunkPos.getMinBlockX();
+        int chunkStartZ = chunkPos.getMinBlockZ();
+
+        final int chunkSize = 16;
+        for (int x = chunkStartX; x < chunkStartX + chunkSize; ++x) {
+            for (int z = chunkStartZ; z < chunkStartZ + chunkSize; ++z) {
+                SnowLayerHandler.placeSnowBlock(world, x, z, randomVals.nextInt(16));
+            }
+        }
+    }
+
     @SubscribeEvent
     public static void onServerTick(TickEvent.ServerTickEvent event) {
         if (event.phase != TickEvent.Phase.END) {
@@ -49,28 +77,5 @@ public class BackgroundBlockProcessor {
                 }
             }
         }
-    }
-
-    private static void processChunk(LevelChunk chunk, Level world) {
-        ChunkPos chunkPos = chunk.getPos();
-        int chunkStartX = chunkPos.getMinBlockX();
-        int chunkStartZ = chunkPos.getMinBlockZ();
-
-        for (int x = chunkStartX; x < chunkStartX + 16; ++x) {
-            for (int z = chunkStartZ; z < chunkStartZ + 16; ++z) {
-                SnowLayerHandler.placeSnowBlock(world, x, z);
-            }
-        }
-    }
-
-    private static ServerLevel getOverworld() {
-        // Get Minecraft server instance
-        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
-
-        if (server != null) {
-            return server.overworld();
-        }
-
-        return null;
     }
 }
