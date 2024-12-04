@@ -1,14 +1,13 @@
-package io.github.animalat.bettersnow.events;
+package io.github.animalat.accumulatedsnow.events;
 
-import io.github.animalat.bettersnow.BetterSnow;
-import io.github.animalat.bettersnow.commands.SnowCommand;
+import io.github.animalat.accumulatedsnow.AccumulatedSnow;
+import io.github.animalat.accumulatedsnow.commands.SnowCommand;
 import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.server.command.ConfigCommand;
 
-@Mod.EventBusSubscriber(modid = BetterSnow.MOD_ID)
+@Mod.EventBusSubscriber(modid = AccumulatedSnow.MOD_ID)
 public class ModEvents {
 
     @SubscribeEvent

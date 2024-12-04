@@ -1,9 +1,8 @@
-package io.github.animalat.bettersnow.events;
+package io.github.animalat.accumulatedsnow.events;
 
 
-import io.github.animalat.bettersnow.BetterSnow;
-import io.github.animalat.bettersnow.SnowLayerHandler;
-import net.minecraft.core.BlockPos;
+import io.github.animalat.accumulatedsnow.AccumulatedSnow;
+import io.github.animalat.accumulatedsnow.SnowLayerHandler;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,7 +17,7 @@ import net.minecraftforge.server.ServerLifecycleHooks;
 
 import java.util.SplittableRandom;
 
-@Mod.EventBusSubscriber(modid = BetterSnow.MOD_ID)
+@Mod.EventBusSubscriber(modid = AccumulatedSnow.MOD_ID)
 public class BackgroundBlockProcessor {
     private static SplittableRandom randomVals = new SplittableRandom();
 

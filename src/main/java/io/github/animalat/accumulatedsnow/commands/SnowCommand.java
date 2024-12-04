@@ -1,15 +1,10 @@
-package io.github.animalat.bettersnow.commands;
+package io.github.animalat.accumulatedsnow.commands;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.context.CommandContext;
-import io.github.animalat.bettersnow.SnowLayerHandler;
+import io.github.animalat.accumulatedsnow.SnowLayerHandler;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
-
-import java.util.logging.Logger;
 
 public class SnowCommand {
     public SnowCommand(CommandDispatcher<CommandSourceStack> dispatcher){
