@@ -1,0 +1,1 @@
+This events folder only handles in-game commands used for testing.

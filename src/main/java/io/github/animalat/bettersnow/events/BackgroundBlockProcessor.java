@@ -39,11 +39,14 @@ public class BackgroundBlockProcessor {
         int chunkStartZ = chunkPos.getMinBlockZ();
 
         final int chunkSize = 16;
-        for (int x = chunkStartX; x < chunkStartX + chunkSize; ++x) {
-            for (int z = chunkStartZ; z < chunkStartZ + chunkSize; ++z) {
-                SnowLayerHandler.placeSnowBlock(world, x, z, randomVals.nextInt(16));
-            }
-        }
+
+        // there is a 1/20 chance for each chunk process for a snow layer to
+        //  be put on some random block in that chunk.
+
+        int randX = chunkStartX + randomVals.nextInt(chunkSize);
+        int randZ = chunkStartZ + randomVals.nextInt(chunkSize);
+
+        SnowLayerHandler.placeSnowBlock(world, randX, randZ, randomVals.nextInt(16));
     }
 
     @SubscribeEvent
@@ -66,6 +69,7 @@ public class BackgroundBlockProcessor {
             ChunkPos playerChunkPos = new ChunkPos(player.blockPosition());
             int viewDistance = ((ServerPlayer) player).server.getPlayerList().getViewDistance();
 
+            // go through each chunk loaded by the player
             for (int chunkX = playerChunkPos.x - viewDistance; chunkX <= playerChunkPos.x + viewDistance; ++chunkX) {
                 for (int chunkZ = playerChunkPos.z - viewDistance; chunkZ <= playerChunkPos.z + viewDistance; ++chunkZ) {
                     LevelChunk chunk = world.getChunkSource().getChunk(chunkX, chunkZ, false);
