@@ -12,7 +12,8 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void onCommandsRegister(RegisterCommandsEvent event) {
-        new SnowCommand(event.getDispatcher());
+        // uncomment below for snow test command
+        // new SnowCommand(event.getDispatcher());
 
         ConfigCommand.register(event.getDispatcher());
     }
