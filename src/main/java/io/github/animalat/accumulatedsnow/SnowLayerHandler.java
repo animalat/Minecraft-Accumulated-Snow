@@ -1,6 +1,14 @@
 package io.github.animalat.accumulatedsnow;
 
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import io.github.animalat.accumulatedsnow.events.BackgroundBlockProcessor;
+import net.minecraft.commands.CommandSource;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
@@ -8,6 +16,12 @@ import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.phys.Vec2;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.fml.ModList;
+import net.minecraftforge.server.ServerLifecycleHooks;
+import org.apache.commons.lang3.mutable.MutableBoolean;
+import org.checkerframework.checker.units.qual.C;
 
 import java.util.SplittableRandom;
 
@@ -34,10 +48,62 @@ public class SnowLayerHandler {
 
         Biome worldBiome = world.getBiome(surfacePos).get();
 
+        final MutableBoolean isWinter = new MutableBoolean(false);
+        if (ModList.get().isLoaded("sereneseasons")) {
+            MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+            if (server == null) {
+                return;
+            }
+
+            CommandSourceStack commandSource = new CommandSourceStack(
+                    new CommandSource() {
+                        @Override
+                        public void sendSystemMessage(Component message) {
+                            String messageText = message.getString();
+                            if (messageText.contains("Winter")) {
+                                isWinter.setValue(true);
+                            }
+                        }
+
+                        @Override
+                        public boolean acceptsSuccess() {
+                            return true;
+                        }
+
+                        @Override
+                        public boolean acceptsFailure() {
+                            return true;
+                        }
+
+                        @Override
+                        public boolean shouldInformAdmins() {
+                            return false;
+                        }
+                    },
+                    new Vec3(0, 0, 0),
+                    Vec2.ZERO,
+                    server.overworld(),
+                    4,
+                    "CustomCommandSource",
+                    Component.literal("CustomCommandSource"),
+                    server,
+                    null
+            );
+
+            CommandDispatcher<CommandSourceStack> dispatcher = server.getCommands().getDispatcher();
+
+            try {
+                dispatcher.execute("season get", commandSource);
+            } catch (CommandSyntaxException e) {
+                e.printStackTrace();
+            }
+        }
+
         final double freezingTemp = 0.15;
         boolean isSnowing = worldBiome.getModifiedClimateSettings().hasPrecipitation() &&
-                            world.isRaining() &&
-                            worldBiome.getModifiedClimateSettings().temperature() <= freezingTemp;
+                world.isRaining() &&
+                (worldBiome.getModifiedClimateSettings().temperature() <= freezingTemp ||
+                        isWinter.getValue());
 
         if (!isSnowing) {
             return;

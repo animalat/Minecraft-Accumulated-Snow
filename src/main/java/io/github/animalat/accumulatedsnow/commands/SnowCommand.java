@@ -15,7 +15,7 @@ public class SnowCommand {
             double x = player.getX();
             double z = player.getZ();
 
-            final int testSeed = 1;
+            final int testSeed = 0;
 
             SnowLayerHandler.placeSnowBlock(source.getLevel(), (int) x, (int) z, testSeed);
             return 0;

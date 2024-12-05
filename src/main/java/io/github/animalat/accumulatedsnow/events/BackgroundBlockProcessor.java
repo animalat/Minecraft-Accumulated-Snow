@@ -3,6 +3,8 @@ package io.github.animalat.accumulatedsnow.events;
 
 import io.github.animalat.accumulatedsnow.AccumulatedSnow;
 import io.github.animalat.accumulatedsnow.SnowLayerHandler;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -10,8 +12,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraftforge.common.util.LogicalSidedProvider;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
@@ -30,6 +35,10 @@ public class BackgroundBlockProcessor {
         }
 
         return null;
+    }
+
+    public static void printMessage(Player player, double num) {
+        player.sendSystemMessage(Component.literal(String.valueOf(num)));
     }
 
     private static void processChunk(LevelChunk chunk, Level world) {
@@ -66,6 +75,7 @@ public class BackgroundBlockProcessor {
 
             Level world = player.level();
             ChunkPos playerChunkPos = new ChunkPos(player.blockPosition());
+
             int viewDistance = ((ServerPlayer) player).server.getPlayerList().getViewDistance();
 
             // go through each chunk loaded by the player
